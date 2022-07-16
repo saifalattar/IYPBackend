@@ -1,1 +1,1 @@
-web: gunicorn api:oyp
+web: gunicorn Backend.api:oyp
