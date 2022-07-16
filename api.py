@@ -11,6 +11,10 @@ from Backend.designer import artist
 
 oyp = FastAPI()
 
+@oyp.get("/")
+def hello():
+    return "Hello"
+
 # to get all apps from specific category
 @oyp.get("/oyp/allApps/{document}/{token}")
 def getAllApps(token, document, response:Response):
