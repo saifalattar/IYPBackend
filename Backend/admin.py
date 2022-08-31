@@ -1,5 +1,5 @@
-from Backend.functions import forgotPasswordEmail, getToken, hashPassword, isStrongPassword, verificationEmail, verifyPassword
-from Backend.schemas import Application, Design, UserSignUp, database
+from functions import forgotPasswordEmail, getToken, hashPassword, isStrongPassword, verificationEmail, verifyPassword
+from schemas import Application, Design, UserSignUp, database
 from fastapi import APIRouter, Body, status, Response
 import pymongo
 

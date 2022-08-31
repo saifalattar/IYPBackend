@@ -2,21 +2,21 @@ import json
 from fastapi import Body, FastAPI ,status, APIRouter, Response
 from pydantic import Json
 import pymongo
-from Backend.functions import getToken, hashPassword, isStrongPassword, isValidToken
-from Backend.schemas import database
-from Backend.admin import adminRouter
-from Backend.auth import authRouter
-from Backend.designer import artist
+from functions import getToken, hashPassword, isStrongPassword, isValidToken
+from schemas import database
+from admin import adminRouter
+from auth import authRouter
+from designer import artist
 
 
-oyp = FastAPI()
+app = FastAPI()
 
-@oyp.get("/")
+@app.get("/")
 def hello():
     return "Hello"
 
 # to get all apps from specific category
-@oyp.get("/oyp/allApps/{document}/{token}")
+@app.get("/oyp/allApps/{document}/{token}")
 def getAllApps(token, document, response:Response):
     apps = []
     if isValidToken(token):
@@ -29,7 +29,7 @@ def getAllApps(token, document, response:Response):
         return {"failure": "not authorized to view this content"}
 
 # to get specific app 
-@oyp.get('/oyp/{token}/{appId}')
+@app.get('/oyp/{token}/{appId}')
 def goToApp(token, appId, response:Response):
     if isValidToken(token):
         for app in database['OYP']['apps'].find():
@@ -42,7 +42,7 @@ def goToApp(token, appId, response:Response):
     
     
     
-@oyp.put("/oyp/{category}/{appId}")
+@app.put("/oyp/{category}/{appId}")
 def likeApp(category, appId,response: Response, nLikes : dict = Body(...) ):
     if nLikes["add"]:
         try:
@@ -59,7 +59,7 @@ def likeApp(category, appId,response: Response, nLikes : dict = Body(...) ):
             response.status_code = status.HTTP_404_NOT_FOUND
             return False
 
-@oyp.get("/oyp/likes/{appId}/isliked")
+@app.get("/oyp/likes/{appId}/isliked")
 def isliked(appId):
     if(database["OYP"]["likes"].find_one({"id":appId}) == None):
         return False
@@ -69,6 +69,6 @@ def isliked(appId):
 
 
 
-oyp.include_router(authRouter)
-oyp.include_router(adminRouter)
-oyp.include_router(artist)
+app.include_router(authRouter)
+app.include_router(adminRouter)
+app.include_router(artist)
