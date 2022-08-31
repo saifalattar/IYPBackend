@@ -1,1 +1,1 @@
-web: gunicorn Backend.api:oyp
+web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker Backend.api:oyp
